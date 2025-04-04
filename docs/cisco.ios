@@ -1,0 +1,96 @@
+# Routers and L2 SW Basic config
+enable secret cisco
+username cisco secret cisco
+line console 0
+    login local
+    exec-timeout 30
+    loggin synchronous
+do write
+exit
+
+line vty 0 4
+    password secureshell
+    login
+    transport input ssh
+    do write
+exit
+
+# CORE L3 SW Basic config
+
+enable algorithm-type scrypt secret cisco 
+username cisco algorithm-type scrypt secret cisco
+line console 0
+    login local
+    exec-timeout 30
+    loggin synchronous
+do write
+exit
+
+line vty 0 4
+    password secureshell
+    login
+    transport input ssh
+    do write
+exit
+# Habilitamos en Port-Channel L2
+interface range gigabitEthernet 1/0/1 - 4
+    channel-group 1 mode desirable   
+interface port-channel 1
+    switchport mode trunk
+    do write
+exit
+
+# Habilitamos el trunk de VLANS
+interface range gigabitEthernet 1/0/1 - 4
+    switchport mode trunk
+    switchport trunk encapsulation dot1q 
+
+# Habilitando VTP SERVE/CLIENT
+vtp mode server
+vtp domain LAN
+vtp password cisco
+
+vtp mode client
+vtp domain LAN
+vtp password cisco
+
+vlan 10
+    name NET
+interface fastEthernet 0/3
+    switchport mode access
+    switchport access vlan 10
+vlan 20
+    name SERVERS
+interface fastEthernet 0/3
+    switchport mode access
+    switchport access vlan 20
+vlan 30
+name GUEST
+
+interface fastEthernet 0/3
+    switchport mode access
+    switchport access vlan 30
+
+vlan 99
+    name MGMT
+interface gigabitEthernet 0/1
+    switchport mode access
+    switchport access vlan 99
+interface fastEthernet 0/4
+    switchport mode access
+    switchport access vlan 99
+
+
+# Apagar puertos no utilizados DSW y ASW
+interface range fastEthernet 0/5 - 24
+    shutdown
+
+interface range gigabitEthernet 0/7 - 24
+    shutdown
+
+
+
+
+
+https://youtu.be/2p7-MluKAgE?t=1090
+
