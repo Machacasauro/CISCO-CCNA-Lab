@@ -1,5 +1,5 @@
 
-# 🧭 Diseño Lógico de la Red OpenSEC
+# 🧭 Diseño Lógico de la Red Oficina 1 
 
 La red está diseñada siguiendo un modelo de red empresarial escalable con redundancia, seguridad y segmentación.
 
@@ -24,7 +24,7 @@ La red está diseñada siguiendo un modelo de red empresarial escalable con redu
 
 ## 🔁 Redundancia y Seguridad
 
-- HSRP en VLANs 10, 20, 30 y 99 con IPs virtuales .1
+- HSRP en VLANs 10, 20, 30 y 99 con IPs virtuales
 - STP (Rapid-PVST+) para evitar loops en capa 2
 - DHCP relay (`ip helper-address`) en SVIs para permitir distribución de IP desde R1
 
