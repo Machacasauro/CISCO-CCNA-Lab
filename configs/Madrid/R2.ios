@@ -1,0 +1,175 @@
+hostname R2
+!
+!
+!
+enable secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
+!
+!
+ip dhcp excluded-address 192.168.11.1 192.168.11.10
+ip dhcp excluded-address 192.168.21.1 192.168.21.10
+ip dhcp excluded-address 192.168.31.1 192.168.31.10
+ip dhcp excluded-address 192.168.100.1 192.168.100.10
+!
+ip dhcp pool VLAN11
+ network 192.168.11.0 255.255.255.0
+ default-router 192.168.11.1
+ dns-server 192.168.21.100
+ domain-name oficina2.local
+ip dhcp pool VLAN21
+ network 192.168.21.0 255.255.255.0
+ default-router 192.168.21.1
+ dns-server 192.168.21.100
+ domain-name oficina2.local
+ip dhcp pool VLAN31
+ network 192.168.31.0 255.255.255.0
+ default-router 192.168.31.1
+ dns-server 192.168.21.100
+ domain-name oficina2.local
+ip dhcp pool VLAN100
+ network 192.168.100.0 255.255.255.0
+ default-router 192.168.100.1
+ dns-server 192.168.21.100
+ domain-name oficina2.local
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+username cisco secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
+!
+!
+license udi pid CISCO2901/K9 sn FTX1524Y06J-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name oficina1.local
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 4.4.4.4 255.255.255.255
+!
+interface Tunnel0
+ ip address 10.0.0.2 255.255.255.252
+ mtu 1476
+ tunnel source Loopback0
+ tunnel destination 1.1.1.1
+!
+!
+interface GigabitEthernet0/0
+ description Hacia ISP
+ no ip address
+ ip nat outside
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0.11
+ encapsulation dot1Q 11
+ ip address 192.168.11.1 255.255.255.0
+ ip nat inside
+!
+interface GigabitEthernet0/0.21
+ encapsulation dot1Q 21
+ ip address 192.168.21.1 255.255.255.0
+ ip nat inside
+!
+interface GigabitEthernet0/0.31
+ encapsulation dot1Q 31
+ ip address 192.168.31.1 255.255.255.0
+ ip nat inside
+!
+interface GigabitEthernet0/0.100
+ encapsulation dot1Q 100
+ ip address 192.168.100.1 255.255.255.0
+ ip nat inside
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0/0
+ ip address 200.3.3.2 255.255.255.252
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 4.4.4.4
+ log-adjacency-changes
+ network 10.0.0.0 0.0.0.3 area 0
+ network 192.168.11.0 0.0.0.255 area 0
+ network 192.168.21.0 0.0.0.255 area 0
+ network 192.168.31.0 0.0.0.255 area 0
+ network 192.168.100.0 0.0.0.255 area 0
+!
+router bgp 65002
+ bgp log-neighbor-changes
+ no synchronization
+ neighbor 10.0.0.1 remote-as 65001
+ neighbor 200.3.3.1 remote-as 65020
+ redistribute ospf 1 
+!
+ip classless
+ip route 200.1.1.2 255.255.255.255 200.3.3.1 
+ip route 0.0.0.0 0.0.0.0 200.3.3.1 
+ip route 1.1.1.1 255.255.255.255 200.1.1.2 
+ip route 192.168.99.0 255.255.255.0 200.3.3.1 
+!
+ip flow-export version 9
+!
+!
+access-list 1 permit 192.168.0.0 0.0.255.255
+!
+!
+!
+!
+snmp-server community OFICINA2 RO
+!
+logging trap debugging
+logging 192.168.21.100
+line con 0
+ exec-timeout 600 0
+ logging synchronous
+ login local
+!
+line aux 0
+!
+line vty 0 4
+ login local
+ transport input ssh
+!
+!
+!
+end
+
+
+R2(config-router)# 
+
+---
+DSW-B1#sh run
+Building configuration...
+
+Current configuration : 1866 bytes
+!
+version 16.3.2
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!

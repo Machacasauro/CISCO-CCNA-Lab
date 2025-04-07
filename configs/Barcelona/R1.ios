@@ -1,0 +1,154 @@
+hostname R1
+!
+!
+!
+enable secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
+!
+!
+ip dhcp excluded-address 192.168.10.1 192.168.10.10
+ip dhcp excluded-address 192.168.20.1 192.168.20.10
+ip dhcp excluded-address 192.168.30.1 192.168.30.10
+ip dhcp excluded-address 192.168.99.1 192.168.99.10
+!
+ip dhcp pool VLAN10
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.1
+ dns-server 192.168.20.100
+ domain-name oficina1.local
+ip dhcp pool VLAN20
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.1
+ dns-server 192.168.20.100
+ domain-name oficina1.local
+ip dhcp pool VLAN30
+ network 192.168.30.0 255.255.255.0
+ default-router 192.168.30.1
+ dns-server 192.168.20.100
+ domain-name oficina1.local
+ip dhcp pool VLAN99
+ network 192.168.99.0 255.255.255.0
+ default-router 192.168.99.1
+ dns-server 192.168.20.100
+ domain-name oficina1.local
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+username cisco secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
+!
+!
+license udi pid CISCO2901/K9 sn FTX1524ZI9H-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip name-server 8.8.8.8
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+!
+interface Tunnel0
+ ip address 10.0.0.1 255.255.255.252
+ mtu 1476
+ tunnel source Loopback0
+ tunnel destination 4.4.4.4
+!
+!
+interface GigabitEthernet0/0
+ ip address 10.10.10.254 255.255.255.252
+ ip nat inside
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ description Hacia DSW-A2
+ ip address 10.10.10.250 255.255.255.252
+ ip nat inside
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0/0
+ description Hacia ISP
+ ip address 200.1.1.2 255.255.255.252
+ ip nat outside
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 1.1.1.1
+ log-adjacency-changes
+ network 10.0.0.0 0.0.0.3 area 0
+ network 10.10.10.252 0.0.0.3 area 0
+ network 10.10.10.248 0.0.0.3 area 0
+ default-information originate
+!
+router bgp 65001
+ bgp log-neighbor-changes
+ no synchronization
+ neighbor 10.0.0.2 remote-as 65002
+ neighbor 200.1.1.1 remote-as 65010
+ redistribute ospf 1 
+!
+ip classless
+ip route 200.3.3.2 255.255.255.255 200.1.1.1 
+ip route 0.0.0.0 0.0.0.0 200.1.1.1 
+ip route 4.4.4.4 255.255.255.255 200.3.3.2 
+ip route 192.168.100.0 255.255.255.0 200.1.1.1 
+!
+ip flow-export version 9
+!
+!
+access-list 1 permit 192.168.0.0 0.0.255.255
+!
+!
+!
+!
+snmp-server community OFICINA1 RO
+!
+logging trap debugging
+logging 192.168.20.100
+line con 0
+ exec-timeout 600 0
+ logging synchronous
+ login local
+!
+line aux 0
+!
+line vty 0 4
+ login local
+ transport input ssh
+!
+!
+!
+end
+---
+
+DSW-A1(config-router)#do sh run
+Building configuration...
+
+Current configuration : 3257 bytes
+!
+version 16.3.2
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
