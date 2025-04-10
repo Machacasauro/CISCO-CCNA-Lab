@@ -10,6 +10,12 @@ line vty 0 4
  transport input ssh
 ip domain-name ccna.local
 crypto key generate rsa
+!
+snmp-server community OFICINA2
+!
+logging trap debugging
+logging 192.168.21.100
+!
 hostname ASW-A1
 !
 enable secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
@@ -111,21 +117,6 @@ interface GigabitEthernet0/2
 interface Vlan1
  no ip address
  shutdown
-!
-!
-!
-!
-line con 0
- logging synchronous
- login local
- exec-timeout 30 0
-!
-line vty 0 4
- password secureshell
- login
- transport input ssh
-line vty 5 15
- login
 !
 !
 !

@@ -10,6 +10,12 @@ line vty 0 4
  transport input ssh
 ip domain-name ccna.local
 crypto key generate rsa
+!
+snmp-server community OFICINA2
+!
+logging trap debugging
+logging 192.168.21.100
+!
 hostname ISP-B
 !
 !

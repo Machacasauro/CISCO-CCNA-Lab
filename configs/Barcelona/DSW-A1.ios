@@ -10,6 +10,12 @@ line vty 0 4
  transport input ssh
 ip domain-name ccna.local
 crypto key generate rsa
+!
+snmp-server community OFICINA2
+!
+logging trap debugging
+logging 192.168.21.100
+!
 hostname DSW-A1
 !
 !
@@ -183,21 +189,6 @@ ip flow-export version 9
 !
 !
 !
-!
-!
-!
-!
-line con 0
- exec-timeout 30 0
- logging synchronous
- login local
-!
-line aux 0
-!
-line vty 0 4
- password secureshell
- login
- transport input ssh
 !
 !
 !
