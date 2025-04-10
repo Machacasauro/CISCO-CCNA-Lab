@@ -20,8 +20,6 @@ Este entorno simula una red empresarial multisede realista orientada a formació
 
 - 📊 [Asignación de Direcciones IP](docs/es/ipassignments.md)
 - ✅ [Paso a Paso de la Configuración](docs/es/config.md)
-- 
-
 
 
 ## 📁 Archivos .ios por dispositivo
@@ -29,6 +27,9 @@ Este entorno simula una red empresarial multisede realista orientada a formació
 Están disponibles individualmente para importarlos directamente en Packet Tracer. Consulta la carpeta 📁 [config/](docs/) del repositorio.
 
 - 🔧 [Troubleshooting y Resolución de Incidencias](docs/es/troubleshooting.md)
+
+
+
 
 # Multi-Site Enterprise Network Project - CCNA LAB
 
