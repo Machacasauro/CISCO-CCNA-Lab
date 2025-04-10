@@ -39,13 +39,14 @@ La red está diseñada con alta disponibilidad, segmentación lógica mediante V
 ### 🕸️ Diagrama Lógico
 
 ```
-[PCs]--ASW--+
-            |
+[PCs]--ASW(1/2/3)---------
+            |           |
         [DSW-A1]====[DSW-A2]
-            |         |
-         Gi0/0     Gi0/1
+            |           |
+         [Gi0/0]     Gi0/1
             \       //
-               [ R1 ]
+               [R1] --- NAT ----> [ISP] --- [R2]
+                    --- GRE ---
 ```
 
 ---
@@ -85,10 +86,11 @@ La red utiliza una arquitectura Router-on-a-Stick con subinterfaces en R2 para e
 ### 🕸️ Diagrama Lógico
 
 ```
-[PCs]--ASW--+
-            |
+[PCs]--ASW(1/2/3)--+-------------
+            |           |
         [DSW-B1]====[DSW-B2]
              |
-            [R2]---GRE---[R1]
+            [R2]--- NAT ----> [ISP] --- [R1]
+                --- GRE ----
 ```
 ---

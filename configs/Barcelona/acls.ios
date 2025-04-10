@@ -1,0 +1,80 @@
+# DSW1-A1 -A2
+access-list 100 permit ospf any any
+access-list 100 permit ip any host 10.10.10.254
+access-list 100 permit ip any host 10.10.10.250
+access-list 100 permit ip any host 10.10.10.253
+access-list 100 permit ip any host 10.10.10.249
+access-list 100 permit icmp 192.168.10.0 0.0.0.255 192.168.0.0 0.0.255.255
+access-list 100 permit icmp 192.168.20.0 0.0.0.255 192.168.0.0 0.0.255.255
+access-list 100 permit tcp 192.168.0.0 0.0.255.255 host 192.168.20.100 eq 53
+access-list 100 permit udp 192.168.0.0 0.0.255.255 host 192.168.20.100 eq 53
+access-list 100 deny ip any any
+# VLAN 99
+access-list 199 permit ospf any any
+access-list 199 permit icmp any 192.168.100.0 0.0.0.255
+access-list 199 permit tcp 192.168.99.0 0.0.0.255 host 192.168.20.100 eq 20
+access-list 199 permit tcp 192.168.99.0 0.0.0.255 host 192.168.20.100 eq 21
+access-list 199 permit tcp 192.168.99.0 0.0.0.255 host 192.168.20.100 eq 69
+access-list 199 permit tcp 192.168.99.0 0.0.0.255 1host 192.168.20.100 eq 514
+access-list 199 permit tcp 192.168.99.0 0.0.0.255 any eq 22
+access-list 199 deny ip any any
+!
+interface Vlan99
+    ip access-group 100 out
+    ip access-group 199 in
+!
+exit
+# VLAN 10
+access-list 110 permit ospf any any
+access-list 110 permit icmp 192.168.0.0 0.0.255.255 any
+access-list 110 deny ip 192.168.10.0 0.0.0.255 any
+interface Vlan10
+    ip access-group 100 out
+    ip access-group 110 in
+!
+exit
+# VLAN 20
+access-list 120 permit ospf any any
+access-list 120 permit udp any any eq 53
+access-list 120 permit icmp 192.168.10.0 0.0.0.255 any
+access-list 120 permit icmp 192.168.20.0 0.0.0.255 any
+access-list 120 permit icmp 192.168.99.0 0.0.0.255 any
+access-list 120 deny ip any 192.168.20.0 0.0.0.255 
+!
+interface Vlan20
+    ip access-group 100 out
+    ip access-group 120 out
+!
+exit
+# VLAN 30
+access-list 130 permit ospf any any
+access-list 130 deny ip 192.168.30.0 0.0.0.255 192.168.0.0 0.0.255.255
+!
+interface Vlan30
+    ip access-group 100 out
+    ip access-group 130 in
+!
+
+
+
+
+exit
+---
+interface Vlan10
+    ip access-group 100 in
+!
+interface Vlan20
+    ip access-group 100 out
+!
+interface Vlan30
+    ip access-group 101 in
+!
+interface Vlan99
+    ip access-group 100 in
+!
+interface range gigabitEthernet 1/0/5-6
+ip access-group 100 out
+!
+
+# ASW-1/2/3
+

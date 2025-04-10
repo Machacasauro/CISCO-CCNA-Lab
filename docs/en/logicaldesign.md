@@ -45,7 +45,7 @@ The network is designed with high availability, logical segmentation using VLANs
             |         |
          Gi0/0     Gi0/1
             \     //
-              [ R1 ]
+              [ R1 ] --- NAT ----> [ISP]
 ```
 
 ---
