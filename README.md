@@ -16,7 +16,7 @@ Este entorno simula una red empresarial multisede realista orientada a formació
 
 - [**Oficina 1 - Barcelona**](docs/es/logicaldesign.md#barcelona): Distribución con HSRP y enrutamiento distribuido.
 - [**Oficina 2 - Madrid**](docs/es/logicaldesign.md#madrid): Arquitectura Router-on-a-Stick.
-- [**ISPs**]: ISP-A e ISP-B simulan conectividad WAN con BGP entre ellos.
+- [**ISPs**](): ISP-A e ISP-B simulan conectividad WAN con BGP entre ellos.
 
 - 📊 [Asignación de Direcciones IP](docs/es/ipassignments.md)
 - ✅ [Paso a Paso de la Configuración](docs/es/config.md)
