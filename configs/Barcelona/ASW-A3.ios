@@ -1,3 +1,15 @@
+enable secret cisco
+username cisco secret cisco
+line console 0
+ login local
+ exec-timeout 30
+ logging synchronous
+line vty 0 4
+ password secureshell
+ login
+ transport input ssh
+ip domain-name ccna.local
+crypto key generate rsa
 hostname ASW-A3
 !
 enable secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
