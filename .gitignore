@@ -1,5 +1,7 @@
 # Documentos veriones anteriores
 /docs.old
+# Documentos de trabajo
+.pka
 # Archivos de sistema
 .DS_Store
 Thumbs.db

@@ -88,13 +88,3 @@ ntp server 192.168.10.1
 end
 
 ---
-ISP-B#sh run
-Building configuration...
-
-Current configuration : 983 bytes
-!
-version 15.1
-no service timestamps log datetime msec
-no service timestamps debug datetime msec
-no service password-encryption
-!

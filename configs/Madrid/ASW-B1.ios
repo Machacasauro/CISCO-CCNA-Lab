@@ -86,15 +86,3 @@ ntp server 192.168.10.1
 end
 
 ---
-
-ASW-B2>enable
-ASW-B2#sh run
-Building configuration...
-
-Current configuration : 1280 bytes
-!
-version 15.0
-no service timestamps log datetime msec
-no service timestamps debug datetime msec
-no service password-encryption
-!

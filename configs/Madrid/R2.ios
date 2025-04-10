@@ -163,13 +163,3 @@ end
 R2(config-router)# 
 
 ---
-DSW-B1#sh run
-Building configuration...
-
-Current configuration : 1866 bytes
-!
-version 16.3.2
-no service timestamps log datetime msec
-no service timestamps debug datetime msec
-no service password-encryption
-!

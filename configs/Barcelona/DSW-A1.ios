@@ -191,19 +191,4 @@ line vty 0 4
 !
 !
 end
-
-
-DSW-A1(config-router)#
-
 ---
-
-DSW-A2#sh run
-Building configuration...
-
-Current configuration : 3200 bytes
-!
-version 16.3.2
-no service timestamps log datetime msec
-no service timestamps debug datetime msec
-no service password-encryption
-!

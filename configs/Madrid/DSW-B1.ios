@@ -144,13 +144,3 @@ ntp server 192.168.10.1
 end
 
 ---
-DSW-B2#sh run
-Building configuration...
-
-Current configuration : 1657 bytes
-!
-version 16.3.2
-no service timestamps log datetime msec
-no service timestamps debug datetime msec
-no service password-encryption
-!
