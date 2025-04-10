@@ -13,8 +13,7 @@ line vty 0 4
  transport input ssh
 ip domain-name ccna.local
 crypto key generate rsa
-```
-
+``` 
 
 
 ### 2. VTP y VLANs
@@ -24,40 +23,40 @@ crypto key generate rsa
 ```bash
 vtp version 2
 vtp mode server
-vtp domain of1
-vtp password of1
-vlan 10,20,30,99
-```
+vtp domain ccna
+vtp password ccna
+vlan 10,20,30,40,99
+``` 
 
 **Oficina 2 - Madrid**:
 
 ```bash
 vtp version 2
 vtp mode server
-vtp domain of2
-vtp password of2
-vlan 11,21,31,99
-```
+vtp domain ccna
+vtp password ccna
+vlan 10,20,30,40,99
+``` 
 
-> ⚠️ Atención: Recordar poner los demás equipos de tu red como cliente, para poblen la base de datos del archivo vlan.dat>
+> ⚠️ Atención: Recordar poner los demás equipos de tu red como cliente para que se pueble la base de datos VLAN:
 
 ```bash
 vtp version 2
 vtp mode client
-vtp domain xxx
-vtp password xxxx
-```
+vtp domain ccna
+vtp password ccna
+``` 
 
 ### 3. EtherChannel
 
-**L2 EtherChannel en DSW ↔ ASW**:
+**L2 EtherChannel entre DSW ↔ ASW**:
 
 ```bash
 interface range gi1/0/2 - 4
  channel-group 1 mode desirable
 interface port-channel 1
  switchport mode trunk
-```
+``` 
 
 **L3 EtherChannel entre DSW-A1 ↔ DSW-A2:**
 
@@ -67,8 +66,8 @@ interface range gi1/0/5 - 6
  channel-group 2 mode desirable
 interface port-channel 2
  no switchport
- ip address x.x.x.x y.y.y.y
-```
+ ip address 10.10.10.1 255.255.255.252
+``` 
 
 ### 4. Enrutamiento Inter-VLAN
 
@@ -80,7 +79,7 @@ interface vlan 10
  standby 1 ip 192.168.10.1
  standby 1 priority 120
  standby 1 preempt
-```
+``` 
 
 **Oficina 2 (Router-on-a-Stick en R2):**
 
@@ -88,43 +87,40 @@ interface vlan 10
 interface gi0/0.11
  encapsulation dot1Q 11
  ip address 192.168.11.1 255.255.255.0
-```
+``` 
 
-
-
-### 5. OSPF Interno (Area 0 en todas las sedes)
+### 5. OSPF Interno (Área 0 en todas las sedes)
 
 ```bash
 router ospf 1
- router-id X.X.X.X
- network 192.168.X.0 0.0.0.255 area 0
- network 10.10.10.X 0.0.0.3 area 0
-```
-
-
+ router-id 1.1.1.1
+ network 192.168.10.0 0.0.0.255 area 0
+ network 192.168.20.0 0.0.0.255 area 0
+ network 192.168.30.0 0.0.0.255 area 0
+ network 192.168.99.0 0.0.0.255 area 0
+ network 10.10.10.0 0.0.0.255 area 0
+``` 
 
 ### 6. DHCP
 
 ```bash
+ip dhcp excluded-address 192.168.10.1 192.168.10.10
 ip dhcp pool VLAN10-Pool
  network 192.168.10.0 255.255.255.0
  default-router 192.168.10.1
  dns-server 192.168.10.100
  domain-name ccna.local
-```
-
-
+``` 
 
 ### 7. HSRP en Distribución (Oficina 1)
 
 ```bash
 interface vlan 10
+ standby version 2
  standby 1 ip 192.168.10.1
  standby 1 priority 120
  standby 1 preempt
-```
-
-
+``` 
 
 ### 8. GRE + BGP para interconexión entre sedes
 
@@ -137,9 +133,7 @@ interface Tunnel0
 router bgp 65001
  neighbor 10.0.0.2 remote-as 65002
  redistribute ospf 1
-```
-
-
+``` 
 
 ### 9. ISP-A y ISP-B simulando proveedores reales
 
@@ -147,12 +141,11 @@ router bgp 65001
 - DHCP para simular asignación automática de IP en R1 y R2
 - Rutas estáticas por defecto + NAT + OSPF/BGP según simulación
 
-
-
 ### 10. Servicios adicionales
 
 ```bash
 snmp-server community OFICINA1 RO
-logging 192.168.xx.100
+logging 192.168.20.100
 logging trap debugging
 ```
+
