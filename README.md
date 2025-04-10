@@ -1,62 +1,90 @@
-# Proyecto de Red Empresarial Multisede - CCNA LAB
+# 🌐 Proyecto de Red Empresarial Multisede - CCNA LAB
 
-# 📘 Documentación disponible:
+> 🔧 Simulación completa de una red empresarial distribuida entre dos sedes, ideal para formación CCNA/SOC.
 
-Este laboratorio representa una topología empresarial de dos sedes (Barcelona y Madrid), conectadas mediante una red WAN simulada con GRE y BGP entre ISPs, integrando OSPF para el enrutamiento interno, HSRP, EtherChannel, Router-on-a-Stick, DHCP, SSH, SNMP y logging.
+## 📘 Documentación
+
+Este laboratorio representa una topología realista de red empresarial con sedes en **Barcelona** y **Madrid**, conectadas a través de una WAN simulada con **GRE** y **BGP** entre ISPs. Se implementan tecnologías de nivel empresarial:
+
+- 🔁 OSPF para enrutamiento interno
+- 👥 HSRP como gateway redundante
+- 🌐 EtherChannel y Trunking
+- 🔀 Router-on-a-Stick
+- 🧪 DHCP, SSH, SNMP y logging
+- 🧰 Preparado para escalar con NGFW, SIEM y herramientas de ciberseguridad
+
 ## 💼 Autor
 
-**Nathan** - Ingeniero en Redes y Seguridad
+**Nathan** — Ingeniero en Redes y Seguridad
+
+---
 
 ## ✨ Objetivo
 
-Este entorno simula una red empresarial multisede realista orientada a formación en CCNA/SOC, preparada para escalar con NGFW, SIEM, y herramientas de ciberseguridad.
+Simular un entorno profesional multisede con tecnologías clave de CCNA y fundamentos para SOC, diseñado para prácticas, troubleshooting y documentación técnica profesional.
 
+---
 
 ## 🏢 Topología General
 
-- [**Oficina 1 - Barcelona**](docs/es/logicaldesign.md#barcelona): Distribución con HSRP y enrutamiento distribuido.
-- [**Oficina 2 - Madrid**](docs/es/logicaldesign.md#madrid): Arquitectura Router-on-a-Stick.
-- [**ISPs**](): ISP-A e ISP-B simulan conectividad WAN con BGP entre ellos.
+- 📍 [**Oficina 1 - Barcelona**](docs/es/logicaldesign.md#barcelona): Distribución con HSRP y enrutamiento distribuido
+- 📍 [**Oficina 2 - Madrid**](docs/es/logicaldesign.md#madrid): Arquitectura Router-on-a-Stick
+- 🌐 [**ISPs (ISP-A & ISP-B)**](): Simulan conectividad WAN mediante BGP con túneles GRE
 
-- 📊 [Asignación de Direcciones IP](docs/es/ipassignments.md)
-- ✅ [Paso a Paso de la Configuración](docs/es/config.md)
+📊 [Asignación de Direcciones IP](docs/es/ipassignments.md)  
+✅ [Guía Paso a Paso de Configuración](docs/es/config.md)
 
+---
 
-## 📁 Archivos .ios por dispositivo
+## 📁 Archivos de Configuración `.ios`
 
-Están disponibles individualmente para importarlos directamente en Packet Tracer. Consulta la carpeta 📁 [config/](docs/) del repositorio.
+Los archivos están disponibles por dispositivo para ser importados directamente en **Cisco Packet Tracer**.
 
-- 🔧 [Troubleshooting y Resolución de Incidencias](docs/es/troubleshooting.md)
+🔹 Carpeta: [📁 `config/`](docs/)  
+🔧 [Resolución de Incidencias y Troubleshooting](docs/es/troubleshooting.md)
 
+---
 
+# 🌍 Multi-Site Enterprise Network Project - CCNA LAB
 
+> 💡 Full-scale enterprise network simulation for advanced CCNA/SOC practice
 
-# Multi-Site Enterprise Network Project - CCNA LAB
+## 📘 Available Documentation
 
-## 📘 Available documentation:
+This lab represents a realistic corporate network topology with two sites (**Barcelona** and **Madrid**) connected via a simulated WAN using **GRE** and **BGP** between ISPs. It includes:
 
-This lab represents a corporate network topology with two sites (Barcelona and Madrid), connected through a simulated WAN using GRE and BGP between ISPs. It integrates OSPF for internal routing, HSRP, EtherChannel, Router-on-a-Stick, DHCP, SSH, SNMP, and logging.
+- 🔁 Internal routing with **OSPF**
+- 👥 Redundant gateways using **HSRP**
+- 🧱 Inter-VLAN routing with **Router-on-a-Stick**
+- 🧪 DHCP, SSH, SNMP and system logging
+- 🛡️ Scalable base for NGFW, SIEM, and cybersecurity tools
 
 ## 💼 Author
 
-**Nathan** - Network & Security Engineer
+**Nathan** — Network & Security Engineer
+
+---
 
 ## ✨ Objective
 
-This environment simulates a realistic multi-site enterprise network designed for CCNA/SOC training, ready to scale with NGFW, SIEM, and cybersecurity tools.
+To simulate a professional-grade network infrastructure for hands-on CCNA and SOC-level training, with realistic services and documentation.
+
+---
 
 ## 🏢 General Topology
 
-- [**Office 1 - Barcelona**](docs/en/logicaldesign.md#barcelona): Distribution with HSRP and distributed routing.
-- [**Office 2 - Madrid**](docs/en/logicaldesign.md#madrid): Router-on-a-Stick architecture.
-- [**ISPs**](): ISP-A and ISP-B simulate WAN connectivity with BGP peering.
+- 🏢 [**Office 1 - Barcelona**](docs/en/logicaldesign.md#barcelona): Distributed routing with HSRP redundancy
+- 🏢 [**Office 2 - Madrid**](docs/en/logicaldesign.md#madrid): Router-on-a-Stick core setup
+- 🌐 [**ISPs (ISP-A & ISP-B)**](): Simulated WAN with GRE tunnels and BGP routing
 
-- 📊 [IP Address Assignments](docs/en/ipassignments.md)
-- ✅ [Step-by-Step Configuration Guide](docs/en/config.md)
+📊 [IP Address Assignments](docs/en/ipassignments.md)  
+✅ [Step-by-Step Configuration Guide](docs/en/config.md)
 
+---
 
-## 📁 Device-Specific .ios Files
+## 📁 Device-Specific `.ios` Files
 
-These are available individually for direct import into Packet Tracer. Check the 📁 [config/](docs/) folder in the repository.
+All configurations are available by device for direct Packet Tracer import.
 
-- 🔧 [Troubleshooting and Issue Resolution](docs/en/troubleshooting.md)
+🔹 Folder: [📁 `config/`](docs/)  
+🔧 [Troubleshooting and Issue Resolution](docs/en/troubleshooting.md)
