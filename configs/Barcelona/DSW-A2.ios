@@ -1,39 +1,34 @@
-enable secret cisco
-username cisco secret cisco
-line console 0
- login local
- exec-timeout 30
- logging synchronous
-line vty 0 4
- password secureshell
- login
- transport input ssh
-ip domain-name ccna.local
-crypto key generate rsa
+DSW-A2#
+Building configuration...
+
+Current configuration : 9147 bytes
 !
-snmp-server community OFICINA2
-!
-logging trap debugging
-logging 192.168.21.100
+version 16.3.2
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
 !
 hostname DSW-A2
 !
 !
-enable secret 9 $9$J19FIAftPZf7c3$4zGjTnaVHbOZNel3nseNhODCQfi5dRmiPSAavr04WnQ
+enable secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
 !
 !
 !
 !
 !
 !
-ip cef
+no ip cef
 ip routing
 !
 no ipv6 cef
 !
 !
 !
-username cisco secret 9 $9$J19FIAftPZf7c3$4zGjTnaVHbOZNel3nseNhODCQfi5dRmiPSAavr04WnQ
+username cisco secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
+!
+!
+lldp run
 !
 !
 !
@@ -43,154 +38,323 @@ username cisco secret 9 $9$J19FIAftPZf7c3$4zGjTnaVHbOZNel3nseNhODCQfi5dRmiPSAavr
 !
 !
 !
-!
+ip domain-name ccna.local
 !
 !
 spanning-tree mode rapid-pvst
-spanning-tree vlan 20,30 priority 24576
-spanning-tree vlan 1,10,99 priority 28672
+spanning-tree vlan 20,30,40 priority 0
+spanning-tree vlan 10,99 priority 4096
 !
 !
 !
 !
 !
+!
+interface Loopback0
+ ip address 6.6.6.6 255.255.255.255
+ ip ospf 1 area 0
 !
 interface Port-channel1
- switchport mode trunk
-!
-interface Port-channel2
  no switchport
- ip address 10.10.10.2 255.255.255.252
+ ip address 10.0.0.2 255.255.255.252
 !
 interface GigabitEthernet1/0/1
  no switchport
  ip address 10.10.10.249 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf priority 1
+ ip ospf 1 area 0
  duplex auto
  speed auto
 !
 interface GigabitEthernet1/0/2
+ switchport trunk native vlan 1000
+ switchport trunk allowed vlan 10,20,30,40,99
  switchport mode trunk
- channel-group 1 mode desirable
+ switchport nonegotiate
 !
 interface GigabitEthernet1/0/3
+ switchport trunk native vlan 1000
+ switchport trunk allowed vlan 10,20,30,40,99
  switchport mode trunk
- channel-group 1 mode desirable
+ switchport nonegotiate
 !
 interface GigabitEthernet1/0/4
+ switchport trunk native vlan 1000
+ switchport trunk allowed vlan 10,20,30,40,99
  switchport mode trunk
- channel-group 1 mode desirable
+ switchport nonegotiate
 !
 interface GigabitEthernet1/0/5
  no switchport
  no ip address
- channel-group 2 mode desirable
+ channel-group 1 mode desirable
+ ip ospf 1 area 0
  duplex auto
  speed auto
 !
 interface GigabitEthernet1/0/6
  no switchport
  no ip address
- channel-group 2 mode desirable
+ channel-group 1 mode desirable
+ ip ospf 1 area 0
  duplex auto
  speed auto
 !
 interface GigabitEthernet1/0/7
+ shutdown
 !
 interface GigabitEthernet1/0/8
+ shutdown
 !
 interface GigabitEthernet1/0/9
+ shutdown
 !
 interface GigabitEthernet1/0/10
+ shutdown
 !
 interface GigabitEthernet1/0/11
+ shutdown
 !
 interface GigabitEthernet1/0/12
+ shutdown
 !
 interface GigabitEthernet1/0/13
+ shutdown
 !
 interface GigabitEthernet1/0/14
+ shutdown
 !
 interface GigabitEthernet1/0/15
+ shutdown
 !
 interface GigabitEthernet1/0/16
+ shutdown
 !
 interface GigabitEthernet1/0/17
+ shutdown
 !
 interface GigabitEthernet1/0/18
+ shutdown
 !
 interface GigabitEthernet1/0/19
+ shutdown
 !
 interface GigabitEthernet1/0/20
+ shutdown
 !
 interface GigabitEthernet1/0/21
+ shutdown
 !
 interface GigabitEthernet1/0/22
+ shutdown
 !
 interface GigabitEthernet1/0/23
+ shutdown
 !
 interface GigabitEthernet1/0/24
+ shutdown
 !
 interface GigabitEthernet1/1/1
+ shutdown
 !
 interface GigabitEthernet1/1/2
+ shutdown
 !
 interface GigabitEthernet1/1/3
+ shutdown
 !
 interface GigabitEthernet1/1/4
+ shutdown
 !
 interface Vlan1
  no ip address
  shutdown
 !
 interface Vlan10
- mac-address 00e0.f7be.9602
- ip address 192.168.10.3 255.255.255.0
- ip helper-address 10.10.10.254
- standby 1 ip 192.168.10.1
- standby 1 preempt
+ mac-address 0010.1140.1c01
+ ip address 192.168.1.3 255.255.255.0
+ ip helper-address 10.10.10.250
+ ip access-group NET-INTERNET-SOME-IN in
+ standby 10 ip 192.168.1.1
+ standby 10 preempt
 !
 interface Vlan20
- mac-address 00e0.f7be.9603
- ip address 192.168.20.3 255.255.255.0
- ip helper-address 10.10.10.254
- standby 2 ip 192.168.20.1
- standby 2 preempt
+ mac-address 0010.1140.1c02
+ ip address 192.168.2.3 255.255.255.0
+ ip helper-address 10.10.10.250
+ ip access-group SEVERS-INTERNET-SOME-IN in
+ standby 20 ip 192.168.2.1
+ standby 20 preempt
 !
 interface Vlan30
- mac-address 00e0.f7be.9604
- ip address 192.168.30.3 255.255.255.0
- ip helper-address 10.10.10.254
- standby 3 ip 192.168.30.1
- standby 3 preempt
+ mac-address 0010.1140.1c03
+ ip address 192.168.3.3 255.255.255.0
+ ip helper-address 10.10.10.250
+ ip access-group GUEST-INTERNET-ONLY-IN in
+ standby 30 ip 192.168.3.1
+ standby 30 preempt
+!
+interface Vlan40
+ mac-address 0010.1140.1c04
+ ip address 192.168.4.3 255.255.255.0
+ ip helper-address 10.10.10.250
+ ip access-group VOICE-ONLY-IN in
+ standby 40 ip 192.168.4.1
+ standby 40 preempt
 !
 interface Vlan99
- mac-address 00e0.f7be.9605
- ip address 192.168.99.3 255.255.255.0
- ip helper-address 10.10.10.254
- standby 4 ip 192.168.99.1
- standby 4 preempt
+ mac-address 0010.1140.1c05
+ ip address 192.168.99.3 255.255.255.240
+ ip helper-address 10.10.10.250
+ ip access-group MGMT-ONLY-IN in
+ standby 99 ip 192.168.99.1
+ standby 99 preempt
 !
 router ospf 1
- router-id 3.3.3.3
+ router-id 6.6.6.6
  log-adjacency-changes
- network 10.10.10.248 0.0.0.3 area 0
- network 192.168.10.0 0.0.0.255 area 0
- network 192.168.20.0 0.0.0.255 area 0
- network 192.168.30.0 0.0.0.255 area 0
- network 192.168.99.0 0.0.0.255 area 0
+ passive-interface Loopback0
+ passive-interface Vlan10
+ passive-interface Vlan20
+ passive-interface Vlan30
+ passive-interface Vlan40
+ network 6.6.6.6 0.0.0.0 area 0
+ network 192.168.1.0 0.0.0.255 area 0
+ network 192.168.2.0 0.0.0.255 area 0
+ network 192.168.3.0 0.0.0.255 area 0
+ network 192.168.4.0 0.0.0.255 area 0
+ network 192.168.99.0 0.0.0.15 area 0
+ network 10.0.0.0 0.0.0.3 area 0
 !
+ip default-gateway 192.168.99.1
 ip classless
-ip route 0.0.0.0 0.0.0.0 192.168.20.1 
 !
 ip flow-export version 9
 !
 !
+ip access-list extended NET-INTERNET-SOME-IN
+ remark --- PERMIT MULTICAST ---
+ permit ip 192.168.1.0 0.0.0.255 224.0.0.0 0.0.0.255
+ remark --- PERMIT DHCP ---
+ permit udp 192.168.1.0 0.0.0.255 any eq bootps
+ permit udp any eq bootpc 192.168.1.0 0.0.0.255 eq bootps
+ remark --- PERMIT DNS TO INTERNAL SERVER ---
+ permit udp 192.168.1.0 0.0.0.255 host 192.168.2.100 eq domain
+ permit tcp 192.168.1.0 0.0.0.255 host 192.168.2.100 eq domain
+ remark --- PERMIT INTER-VLAN 10 ---
+ permit ip 192.168.1.0 0.0.0.255 192.168.17.0 0.0.0.255
+ remark --- DENY ACCESS TO INTERNAL RFC1918 ---
+ deny ip 192.168.1.0 0.0.0.255 192.168.2.0 0.0.0.255
+ deny ip 192.168.1.0 0.0.0.255 192.168.3.0 0.0.0.255
+ deny ip 192.168.1.0 0.0.0.255 192.168.4.0 0.0.0.255
+ deny ip 192.168.1.0 0.0.0.255 192.168.99.0 0.0.0.255
+ deny ip 192.168.1.0 0.0.0.255 192.168.16.0 0.0.7.255
+ remark --- PERMIT ANY ---
+ permit ip any any
+ip access-list extended SERVERS-INTERNET-SOME-IN
+ remark --- PERMIT MULTICAST ---
+ permit ip 192.168.2.0 0.0.0.255 224.0.0.0 0.0.0.255
+ remark --- DENY DHCP ---
+ deny udp 192.168.2.0 0.0.0.255 any eq bootps
+ deny udp any eq bootpc 192.168.2.0 0.0.0.255 eq bootps
+ remark --- PERMIT INTER-VLAN 10/20 ---
+ permit ip 192.168.2.0 0.0.0.255 192.168.1.0 0.0.0.255
+ permit ip 192.168.2.0 0.0.0.255 192.168.18.0 0.0.0.255
+ remark --- DENY ACCESS TO INTERNAL RFC1918 ---
+ deny ip 192.168.2.0 0.0.0.255 192.168.3.0 0.0.0.255
+ deny ip 192.168.2.0 0.0.0.255 192.168.4.0 0.0.0.255
+ deny ip 192.168.2.0 0.0.0.255 192.168.99.0 0.0.0.255
+ deny ip 192.168.2.0 0.0.0.255 192.168.16.0 0.0.7.255
+ remark --- PERMIT ANY ---
+ permit ip any any
+ip access-list extended GUEST-INTERNET-ONLY-IN
+ remark --- PERMIT MULTICAST ---
+ permit ip 192.168.3.0 0.0.0.255 224.0.0.0 0.0.0.255
+ remark --- PERMIT DHCP ---
+ permit udp 192.168.3.0 0.0.0.255 any eq bootps
+ permit udp any eq bootpc 192.168.3.0 0.0.0.255 eq bootps
+ remark --- PERMIT DNS TO INTERNAL SERVER ---
+ permit udp 192.168.3.0 0.0.0.255 host 192.168.2.100 eq domain
+ permit tcp 192.168.3.0 0.0.0.255 host 192.168.2.100 eq domain
+ remark --- DENY ACCESS TO INTERNAL RFC1918 ---
+ deny ip 192.168.3.0 0.0.0.255 192.168.1.0 0.0.0.255
+ deny ip 192.168.3.0 0.0.0.255 192.168.2.0 0.0.0.255
+ deny ip 192.168.3.0 0.0.0.255 192.168.4.0 0.0.0.255
+ deny ip 192.168.3.0 0.0.0.255 192.168.99.0 0.0.0.255
+ deny ip 192.168.3.0 0.0.0.255 192.168.16.0 0.0.7.255
+ remark --- PERMIT ANY ---
+ permit ip any any
+ip access-list extended VOICE-ONLY-IN
+ remark --- PERMIT MULTICAST ---
+ permit ip 192.168.4.0 0.0.0.255 224.0.0.0 0.0.0.255
+ remark --- PERMIT DHCP ---
+ permit udp 192.168.4.0 0.0.0.255 any eq bootps
+ permit udp any eq bootps 192.168.4.0 0.0.0.255 eq bootpc
+ remark --- PERMIT DNS TO INTERNAL SERVER ---
+ permit udp 192.168.4.0 0.0.0.255 host 192.168.2.100 eq domain
+ permit tcp 192.168.4.0 0.0.0.255 host 192.168.2.100 eq domain
+ remark --- TFTP (Phone config)
+ permit udp 192.168.4.0 0.0.0.255 host 192.168.2.100 eq tftp
+ remark --- PERMIT SIP/SCCP ---
+ permit udp 192.168.4.0 0.0.0.255 host 192.168.2.100 range 5060 5061
+ permit tcp 192.168.4.0 0.0.0.255 host 192.168.2.100 range 5060 5061
+ permit tcp 192.168.4.0 0.0.0.255 host 192.168.2.100 eq 2000
+ remark --- RTP/RTCP voice media ---
+ permit udp 192.168.4.0 0.0.0.255 host 192.168.2.100 range 16384 32767
+ permit udp host 192.168.2.100 192.168.4.0 0.0.0.255 range 16384 32767
+ remark --- DENY ACCESS TO INTERNAL RFC1918 ---
+ deny ip 192.168.4.0 0.0.0.255 192.168.1.0 0.0.0.255
+ deny ip 192.168.4.0 0.0.0.255 192.168.2.0 0.0.0.255
+ deny ip 192.168.4.0 0.0.0.255 192.168.3.0 0.0.0.255
+ deny ip 192.168.4.0 0.0.0.255 192.168.96.0 0.0.7.255
+ deny ip 192.168.4.0 0.0.0.255 192.168.16.0 0.0.7.255
+ remark --- PERMIT ANY ---
+ permit ip any any
+ip access-list extended MGMT-ONLY-IN
+ remark --- PERMIT MULTICAST ---
+ permit ip 192.168.99.0 0.0.0.255 224.0.0.0 0.0.0.255
+ remark --- PERMIT DHCP ---
+ permit udp 192.168.96.0 0.0.7.255 any eq bootps
+ permit udp any eq bootpc 192.168.96.0 0.0.7.255 eq bootps
+ remark --- PERMIT DNS TO INTERNAL SERVER ---
+ permit udp 192.168.4.0 0.0.0.255 host 192.168.2.100 eq domain
+ permit tcp 192.168.4.0 0.0.0.255 host 192.168.2.100 eq domain
+ remark --- PERMIT INTER-VLAN ICMP 10/20/30/40 ALL ---
+ permit icmp 192.168.99.0 0.0.0.255 192.168.0.0 0.0.7.255
+ permit icmp 192.168.99.0 0.0.0.255 192.168.16.0 0.0.7.255
+ permit icmp 192.168.99.16 0.0.0.15 192.168.99.0 0.0.0.255
+ remark --- DENY ACCESS TO INTERNAL RFC1918 ---
+ deny ip 192.168.99.0 0.0.0.15 192.168.1.0 0.0.0.255
+ deny ip 192.168.99.0 0.0.0.15 192.168.2.0 0.0.0.255
+ deny ip 192.168.99.0 0.0.0.15 192.168.3.0 0.0.0.255
+ deny ip 192.168.99.0 0.0.0.15 192.168.4.0 0.0.0.255
+ remark --- PERMIT ANY ---
+ permit ip any any
+ deny ip 192.168.99.0 0.0.0.15 192.168.99.0 0.0.0.255
 !
 !
 !
 !
+snmp-server community SNMPSTRING RO
 !
-
+logging trap debugging
+logging 192.168.2.100
+line con 0
+ exec-timeout 30 0
+ logging synchronous
+ login local
+!
+line aux 0
+!
+line vty 0 4
+ password secureshell
+ login
+ transport input ssh
+!
+!
+!
+ntp authenticate
+ntp server 192.168.99.1
+!
 end
-
----

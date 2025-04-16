@@ -44,7 +44,7 @@ La red está diseñada con alta disponibilidad, segmentación lógica mediante V
         [DSW-A1]====[DSW-A2]
             |           |
          [Gi0/0]     Gi0/1
-            \       //
+            \\      //
                [R1] --- NAT ----> [ISP] --- [R2]
                     --- GRE ---
 ```

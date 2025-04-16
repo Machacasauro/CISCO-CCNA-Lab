@@ -1,20 +1,20 @@
 
-# 🛠️ Troubleshooting - CCNA Multisite Enterprise Network
+# 🛠️ Troubleshooting - CCNA Multi-site Enterprise Network
 
-This document describes the most common issues encountered during the lab deployment and the solutions applied.
+This document describes the issues encountered during the development of the lab and the solutions applied.
 
 ---
 
 ## ⚡ Common Issues and Solutions
 
-### 1. ❌ OSPF fails to establish neighbor relationship between R1 and R2 (via GRE)
-**Symptom**: Logs such as:
+### 1. ❌ OSPF does not establish neighbors between R1 and R2 (via GRE)
+**Symptom**: Messages like:
 ```
 %OSPF-5-ADJCHG: Neighbor Down: Dead timer expired
 ```
 **Cause**:
-- Tunnel0 interface was not advertised in OSPF.
-- R1 was using a loopback as `tunnel source`, but it was not properly routable.
+- Tunnel0 was not advertised in OSPF.
+- R1 was using loopback as `tunnel source` but it was not properly routable.
 
 **Solution**:
 ```bash
@@ -25,33 +25,33 @@ Ensure the `tunnel destination` is reachable and appears in the routing table.
 
 ---
 
-### 2. ⚠️ DHCP does not assign IP addresses
+### 2. ⚠️ DHCP not assigning IP addresses
 **Cause**:
-- Misconfigured excluded-addresses.
-- Missing `default-router` directive.
+- Incorrectly defined excluded-addresses.
+- No default-router configured.
 
 **Solution**:
-Check `ip dhcp excluded-address` and confirm that the `default-router` matches the VLAN gateway.
+Check the `ip dhcp excluded-address` and ensure the `default-router` belongs to the corresponding VLAN.
 
 ---
 
-### 3. ⚠️ STP blocks traffic between switches
+### 3. ⚠️ STP blocking traffic between switches
 **Cause**:
-- Multiple trunk links without proper STP configuration.
+- Multiple uncontrolled links.
 
 **Solution**:
 ```bash
 spanning-tree mode rapid-pvst
 spanning-tree vlan X root primary
 ```
-Leverage EtherChannel for redundant links and avoid loops.
+Use EtherChannel properly and avoid loops.
 
 ---
 
-### 4. ❌ BGP neighbor relationship not established
+### 4. ❌ BGP does not establish neighbor relationships
 **Cause**:
-- Incorrect IP for GRE interface.
-- No IP reachability to remote peer.
+- Incorrect GRE IP configuration
+- No connectivity to the destination IP
 
 **Solution**:
 Verify:
@@ -63,8 +63,8 @@ router bgp 65001
 
 ---
 
-### 5. ❌ SSH fails to connect
-**Cause**: Missing VTY configuration.
+### 5. ❌ SSH not working
+**Cause**: Missing commands under `line vty`
 **Solution**:
 ```bash
 line vty 0 4
@@ -74,15 +74,15 @@ line vty 0 4
 
 ---
 
-### 6. ⚡ NAT interfering with GRE/BGP
-**Cause**: NAT configured on tunnel interface.
-**Solution**: Exclude GRE/BGP traffic from NAT (not required in PT but good practice in real-world environments).
+### 6. ⚡ NAT blocking GRE/BGP
+**Cause**: NAT applied to the tunnel interface
+**Solution**: Exclude GRE/BGP traffic from NAT (not required in Packet Tracer, but best practice in real environments)
 
 ---
 
 ## ✅ Final Recommendations
-- Always test IP reachability before configuring routing protocols.
-- Use `show ip route`, `show ip ospf neighbor`, and `show ip bgp summary` for troubleshooting.
-- Always document and back up configurations per device.
+- Always verify IP connectivity before configuring routing protocols.
+- Use `show ip route`, `show ip ospf neighbor`, `show ip bgp summary` for diagnostics.
+- Always document your changes and maintain per-device backups.
 
 ---

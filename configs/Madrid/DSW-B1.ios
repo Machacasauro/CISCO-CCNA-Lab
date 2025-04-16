@@ -1,34 +1,32 @@
-enable secret cisco
-username cisco secret cisco
-line console 0
- login local
- exec-timeout 30
- logging synchronous
-line vty 0 4
- password secureshell
- login
- transport input ssh
-ip domain-name ccna.local
-crypto key generate rsa
+DSW-B1#
+Building configuration...
+
+Current configuration : 3637 bytes
 !
-snmp-server community OFICINA2
-!
-logging trap debugging
-logging 192.168.21.100
+version 16.3.2
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
 !
 hostname DSW-B1
 !
 !
+enable secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
 !
 !
 !
 !
 !
-ip cef
+!
+no ip cef
 no ipv6 cef
 !
 !
 !
+username cisco secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
+!
+!
+lldp run
 !
 !
 !
@@ -36,40 +34,84 @@ no ipv6 cef
 !
 !
 !
+ip arp inspection vlan 10,20,30,40,99
 !
+ip dhcp snooping vlan 10,20,30,40,99
+ip dhcp snooping
 !
+ip domain-name ccna.local
 !
 !
 spanning-tree mode rapid-pvst
-spanning-tree vlan 1,11,21,31,99 priority 24576
+spanning-tree vlan 10,20,30,40,99 priority 4096
 !
 !
 !
 !
 !
 !
-interface Port-channel2
+interface Loopback0
+ ip address 7.7.7.7 255.255.255.255
+!
+interface Port-channel1
+ description TRUNK TO ASW-Bx
+ switchport trunk native vlan 1000
+ switchport trunk allowed vlan 10,20,30,40,99
  switchport mode trunk
+ switchport nonegotiate
 !
 interface GigabitEthernet1/0/1
+ description TRUNK TO R2
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport trunk native vlan 1000
+ switchport trunk allowed vlan 10,20,30,40,99
  switchport mode trunk
+ switchport nonegotiate
 !
 interface GigabitEthernet1/0/2
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport trunk native vlan 1000
+ switchport trunk allowed vlan 10,20,30,40,99
  switchport mode trunk
+ switchport nonegotiate
 !
 interface GigabitEthernet1/0/3
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport trunk native vlan 1000
+ switchport trunk allowed vlan 10,20,30,40,99
  switchport mode trunk
+ switchport nonegotiate
 !
 interface GigabitEthernet1/0/4
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport trunk native vlan 1000
+ switchport trunk allowed vlan 10,20,30,40,99
  switchport mode trunk
+ switchport nonegotiate
 !
 interface GigabitEthernet1/0/5
+ description MEMBERS OF Po1 TO ASW
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport trunk native vlan 1000
+ switchport trunk allowed vlan 10,20,30,40,99
  switchport mode trunk
- channel-group 2 mode desirable
+ switchport nonegotiate
+ channel-group 1 mode desirable
 !
 interface GigabitEthernet1/0/6
+ description MEMBERS OF Po1 TO ASW
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport trunk native vlan 1000
+ switchport trunk allowed vlan 10,20,30,40,99
  switchport mode trunk
- channel-group 2 mode desirable
+ switchport nonegotiate
+ channel-group 1 mode desirable
 !
 interface GigabitEthernet1/0/7
  shutdown
@@ -130,13 +172,20 @@ interface GigabitEthernet1/1/1
 interface GigabitEthernet1/1/2
 !
 interface GigabitEthernet1/1/3
+ shutdown
 !
 interface GigabitEthernet1/1/4
+ shutdown
 !
 interface Vlan1
  no ip address
  shutdown
 !
+interface Vlan99
+ mac-address 0030.f265.7501
+ ip address 192.168.99.18 255.255.255.240
+!
+ip default-gateway 192.168.99.17
 ip classless
 !
 ip flow-export version 9
@@ -146,18 +195,25 @@ ip flow-export version 9
 !
 !
 !
+snmp-server community SNMPSTRING RO
 !
+logging trap debugging
+logging 192.168.18.100
 line con 0
+ exec-timeout 600 0
+ logging synchronous
+ login local
 !
 line aux 0
 !
 line vty 0 4
+ password secureshell
  login
+ transport input ssh
 !
 !
 !
 ntp authenticate
-ntp server 192.168.10.1
+ntp server 192.168.99.17
 !
 end
----

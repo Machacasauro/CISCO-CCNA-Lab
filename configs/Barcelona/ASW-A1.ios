@@ -1,20 +1,12 @@
-enable secret cisco
-username cisco secret cisco
-line console 0
- login local
- exec-timeout 30
- logging synchronous
-line vty 0 4
- password secureshell
- login
- transport input ssh
-ip domain-name ccna.local
-crypto key generate rsa
+ASW-A1#
+Building configuration...
+
+Current configuration : 2462 bytes
 !
-snmp-server community OFICINA2
-!
-logging trap debugging
-logging 192.168.21.100
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
 !
 hostname ASW-A1
 !
@@ -22,26 +14,35 @@ enable secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
 !
 !
 !
+ip domain-name ccna.local
 !
 username cisco secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
 !
 !
 !
+lldp run
+!
 spanning-tree mode rapid-pvst
 spanning-tree extend system-id
 !
-interface Port-channel1
- switchport mode trunk
-!
 interface FastEthernet0/1
- switchport mode trunk
+ description WLC
+ switchport access vlan 99
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast
+ spanning-tree bpduguard enable
 !
 interface FastEthernet0/2
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 30,99
  switchport mode trunk
+ switchport nonegotiate
 !
 interface FastEthernet0/3
  switchport access vlan 99
  switchport mode access
+ switchport nonegotiate
  spanning-tree portfast
  spanning-tree bpduguard enable
 !
@@ -109,18 +110,49 @@ interface FastEthernet0/24
  shutdown
 !
 interface GigabitEthernet0/1
+ description TRUNK TO DSW
+ switchport trunk native vlan 1000
+ switchport trunk allowed vlan 10,20,30,40,99
  switchport mode trunk
+ switchport nonegotiate
 !
 interface GigabitEthernet0/2
+ description TRUNK TO DSW BACKUP
+ switchport trunk native vlan 1000
+ switchport trunk allowed vlan 10,20,30,40,99
  switchport mode trunk
+ switchport nonegotiate
 !
 interface Vlan1
  no ip address
  shutdown
 !
+interface Vlan99
+ ip address 192.168.99.4 255.255.255.240
+!
+ip default-gateway 192.168.99.1
+!
+logging trap debugging
+logging 192.168.2.100
 !
 !
+snmp-server community SNMPSTRING RO
+!
+line con 0
+ logging synchronous
+ login local
+ exec-timeout 30 0
+!
+line vty 0 4
+ password secureshell
+ login
+ transport input ssh
+line vty 5 15
+ login
+!
+!
+!
+ntp authenticate
+ntp server 192.168.99.1
 !
 end
-
----

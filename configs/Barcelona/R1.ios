@@ -1,20 +1,12 @@
-enable secret cisco
-username cisco secret cisco
-line console 0
- login local
- exec-timeout 30
- logging synchronous
-line vty 0 4
- password secureshell
- login
- transport input ssh
-ip domain-name ccna.local
-crypto key generate rsa
+R1#
+Building configuration...
+
+Current configuration : 3584 bytes
 !
-snmp-server community OFICINA2
-!
-logging trap debugging
-logging 192.168.21.100
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
 !
 hostname R1
 !
@@ -23,35 +15,35 @@ hostname R1
 enable secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
 !
 !
-ip dhcp excluded-address 192.168.10.1 192.168.10.10
-ip dhcp excluded-address 192.168.20.1 192.168.20.10
-ip dhcp excluded-address 192.168.30.1 192.168.30.10
+ip dhcp excluded-address 192.168.1.1 192.168.1.10
+ip dhcp excluded-address 192.168.2.1 192.168.2.10
+ip dhcp excluded-address 192.168.3.1 192.168.3.10
+ip dhcp excluded-address 192.168.4.1 192.168.4.10
 ip dhcp excluded-address 192.168.99.1 192.168.99.10
 !
-ip dhcp pool VLAN10
- network 192.168.10.0 255.255.255.0
- default-router 192.168.10.1
- dns-server 192.168.20.100
- domain-name oficina1.local
-ip dhcp pool VLAN20
- network 192.168.20.0 255.255.255.0
- default-router 192.168.20.1
- dns-server 192.168.20.100
- domain-name oficina1.local
-ip dhcp pool VLAN30
- network 192.168.30.0 255.255.255.0
- default-router 192.168.30.1
- dns-server 192.168.20.100
- domain-name oficina1.local
-ip dhcp pool VLAN99
+ip dhcp pool NET
+ network 192.168.1.0 255.255.255.0
+ default-router 192.168.1.1
+ dns-server 192.168.2.100
+ip dhcp pool GUEST
+ network 192.168.3.0 255.255.255.0
+ default-router 192.168.3.1
+ dns-server 192.168.2.100
+ip dhcp pool VOICE
+ network 192.168.4.0 255.255.255.0
+ default-router 192.168.4.1
+ option 150 ip 192.168.2.100
+ dns-server 192.168.2.100
+ip dhcp pool MGMT
  network 192.168.99.0 255.255.255.240
  default-router 192.168.99.1
- dns-server 192.168.20.100
- domain-name oficina1.local
+ dns-server 192.168.2.100
 !
 !
 !
 no ip cef
+ipv6 unicast-routing
+!
 no ipv6 cef
 !
 !
@@ -59,7 +51,7 @@ no ipv6 cef
 username cisco secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
 !
 !
-license udi pid CISCO2901/K9 sn FTX1524ZI9H-
+license udi pid CISCO2911/K9 sn FTX1524LN3Z-
 !
 !
 !
@@ -69,7 +61,9 @@ license udi pid CISCO2901/K9 sn FTX1524ZI9H-
 !
 !
 !
-ip name-server 8.8.8.8
+ip ftp username cisco
+ip ftp password cisco
+ip domain-name ccna.local
 !
 !
 spanning-tree mode pvst
@@ -81,69 +75,99 @@ spanning-tree mode pvst
 !
 interface Loopback0
  ip address 1.1.1.1 255.255.255.255
+ ip ospf 1 area 0
 !
 interface Tunnel0
- ip address 10.0.0.1 255.255.255.252
+ ip address 10.255.255.1 255.255.255.252
  mtu 1476
- tunnel source Loopback0
- tunnel destination 4.4.4.4
+ tunnel source GigabitEthernet0/0/0
+ tunnel destination 200.3.3.2
 !
 !
 interface GigabitEthernet0/0
  ip address 10.10.10.254 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf priority 1
+ ip ospf 1 area 0
  ip nat inside
  duplex auto
  speed auto
 !
 interface GigabitEthernet0/1
- description Hacia DSW-A2
  ip address 10.10.10.250 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf priority 1
+ ip ospf 1 area 0
  ip nat inside
  duplex auto
  speed auto
 !
+interface GigabitEthernet0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
 interface GigabitEthernet0/0/0
- description Hacia ISP
  ip address 200.1.1.2 255.255.255.252
  ip nat outside
+ ipv6 address 2001:DB8:1::1/64
+ ipv6 address 2001:DB8:A::2/64
+!
+interface GigabitEthernet0/1/0
+ no ip address
+ shutdown
 !
 interface Vlan1
  no ip address
  shutdown
 !
+interface Vlan99
+ mac-address 0060.5cc9.7a01
+ no ip address
+ ip helper-address 10.10.10.254
+ ip helper-address 10.10.10.250
+!
 router ospf 1
  router-id 1.1.1.1
  log-adjacency-changes
- network 10.0.0.0 0.0.0.3 area 0
- network 10.10.10.252 0.0.0.3 area 0
- network 10.10.10.248 0.0.0.3 area 0
+ passive-interface Loopback0
+ network 1.1.1.1 0.0.0.0 area 0
  default-information originate
 !
-router bgp 65001
+router bgp 65002
  bgp log-neighbor-changes
  no synchronization
- neighbor 10.0.0.2 remote-as 65002
  neighbor 200.1.1.1 remote-as 65010
- redistribute ospf 1 
 !
+ip nat inside source list 100 interface GigabitEthernet0/0/0 overload
 ip classless
-ip route 200.3.3.2 255.255.255.255 200.1.1.1 
 ip route 0.0.0.0 0.0.0.0 200.1.1.1 
-ip route 4.4.4.4 255.255.255.255 200.3.3.2 
-ip route 192.168.100.0 255.255.255.0 200.1.1.1 
+ip route 192.168.99.16 255.255.255.240 10.255.255.2 
+ip route 192.168.17.0 255.255.255.0 10.255.255.2 
+ip route 192.168.18.0 255.255.255.0 10.255.255.2 
+ip route 192.168.19.0 255.255.255.0 10.255.255.2 
+ip route 192.168.20.0 255.255.255.0 10.255.255.2 
 !
 ip flow-export version 9
 !
 !
-access-list 1 permit 192.168.0.0 0.0.255.255
+access-list 100 deny ip 192.168.0.0 0.0.7.255 192.168.16.0 0.0.7.255
+access-list 100 deny ip 192.168.99.0 0.0.0.15 192.168.99.16 0.0.0.15
+access-list 100 permit ip 192.168.1.0 0.0.0.255 any
+access-list 100 permit ip 192.168.2.0 0.0.0.255 any
+access-list 100 permit ip 192.168.3.0 0.0.0.255 any
+access-list 100 permit ip 192.168.4.0 0.0.0.255 any
+access-list 100 permit ip 192.168.99.0 0.0.0.15 any
 !
 !
 !
 !
-snmp-server community OFICINA1 RO
+snmp-server community OFICINA1 RW
+snmp-server community SNMPSTRING RO
 !
 logging trap debugging
-logging 192.168.20.100
+logging 192.168.2.100
 line con 0
  exec-timeout 600 0
  logging synchronous
@@ -152,10 +176,11 @@ line con 0
 line aux 0
 !
 line vty 0 4
- login local
+ password secureshell
+ login
  transport input ssh
 !
 !
+ntp master 3
 !
 end
----
