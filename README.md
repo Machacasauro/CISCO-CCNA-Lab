@@ -6,16 +6,16 @@
 
 Este laboratorio representa una topología realista de red empresarial con sedes en **Barcelona** y **Madrid**, conectadas a través de una WAN simulada con **GRE** y **BGP** entre ISPs. Se implementan tecnologías de nivel empresarial:
 
-- 🔁 OSPF para enrutamiento interno
-- 👥 HSRP como gateway redundante
-- 🌐 EtherChannel y Trunking
-- 🔀 Router-on-a-Stick
-- 🧪 DHCP, SSH, SNMP y logging
-- 🧰 Preparado para escalar con NGFW, SIEM y herramientas de ciberseguridad
+- 🔁 **OSPF** para enrutamiento interno
+- 👥 **HSRP** como gateway redundante
+- 🌐 **EtherChannel** y **Trunking**
+- 🔀 **Router-on-a-Stick**
+- 🧪 **DHCP**, **SSH**, **SNMP** y **logging**
+- 🧰 Preparado para escalar con **NGFW**, **SIEM** y herramientas de **ciberseguridad**
 
 ## 💼 Autor
 
-**Nathan** — Ingeniero en Redes y Seguridad
+**Nathan CM** — Ingeniero en Redes y Seguridad
 
 ---
 
@@ -41,50 +41,54 @@ Simular un entorno profesional multisede con tecnologías clave de CCNA y fundam
 Los archivos están disponibles por dispositivo para ser importados directamente en **Cisco Packet Tracer**.
 
 🔹 Carpeta: [📁 `config/`](docs/)  
-🔧 [Resolución de Incidencias y Troubleshooting](docs/es/troubleshooting.md)
+    [Resolución de Incidencias y Troubleshooting](docs/es/troubleshooting.md)
+    [Archivo Packet Tracer V.8.2.2.0400](configs/CISCO-CCNA-Lab.pkt)
+    [ACLs](configs/ACL_Policies.md)
 
 ---
+# 🌐 Multi-Site Enterprise Network Project - CCNA LAB
 
-# 🌍 Multi-Site Enterprise Network Project - CCNA LAB
+> 🔧 Full simulation of a distributed enterprise network between two sites, ideal for CCNA/SOC training.
 
-> 💡 Full-scale enterprise network simulation for advanced CCNA/SOC practice
+## 📘 Documentation
 
-## 📘 Available Documentation
+This lab represents a realistic enterprise network topology with offices in **Barcelona** and **Madrid**, connected through a simulated WAN using **GRE** and **BGP** between ISPs. Enterprise-grade technologies are implemented:
 
-This lab represents a realistic corporate network topology with two sites (**Barcelona** and **Madrid**) connected via a simulated WAN using **GRE** and **BGP** between ISPs. It includes:
-
-- 🔁 Internal routing with **OSPF**
-- 👥 Redundant gateways using **HSRP**
-- 🧱 Inter-VLAN routing with **Router-on-a-Stick**
-- 🧪 DHCP, SSH, SNMP and system logging
-- 🛡️ Scalable base for NGFW, SIEM, and cybersecurity tools
+- 🔁 **OSPF** for internal routing  
+- 👥 **HSRP** as a redundant gateway  
+- 🌐 **EtherChannel** and **Trunking**  
+- 🔀 **Router-on-a-Stick**  
+- 🧪 **DHCP**, **SSH**, **SNMP**, and **logging**  
+- 🧰 Ready to scale with **NGFW**, **SIEM**, and **cybersecurity tools**
 
 ## 💼 Author
 
-**Nathan** — Network & Security Engineer
+**Nathan CM** — Network and Security Engineer
 
 ---
 
 ## ✨ Objective
 
-To simulate a professional-grade network infrastructure for hands-on CCNA and SOC-level training, with realistic services and documentation.
+To simulate a professional multi-site environment using core CCNA technologies and SOC fundamentals, designed for hands-on practice, troubleshooting, and professional technical documentation.
 
 ---
 
 ## 🏢 General Topology
 
-- 🏢 [**Office 1 - Barcelona**](docs/en/logicaldesign.md#barcelona): Distributed routing with HSRP redundancy
-- 🏢 [**Office 2 - Madrid**](docs/en/logicaldesign.md#madrid): Router-on-a-Stick core setup
-- 🌐 [**ISPs (ISP-A & ISP-B)**](): Simulated WAN with GRE tunnels and BGP routing
+- 📍 [**Office 1 - Barcelona**](docs/en/logicaldesign.md#barcelona): Distribution model with HSRP and distributed routing  
+- 📍 [**Office 2 - Madrid**](docs/en/logicaldesign.md#madrid): Router-on-a-Stick architecture  
+- 🌐 [**ISPs (ISP-A & ISP-B)**](): Simulate WAN connectivity via BGP and GRE tunnels  
 
-📊 [IP Address Assignments](docs/en/ipassignments.md)  
+📊 [IP Address Assignment](docs/en/ipassignments.md)  
 ✅ [Step-by-Step Configuration Guide](docs/en/config.md)
 
 ---
 
-## 📁 Device-Specific `.ios` Files
+## 📁 `.ios` Configuration Files
 
-All configurations are available by device for direct Packet Tracer import.
+The configuration files are available per device for direct import into **Cisco Packet Tracer**.
 
 🔹 Folder: [📁 `config/`](docs/)  
 🔧 [Troubleshooting and Issue Resolution](docs/en/troubleshooting.md)
+
+---
