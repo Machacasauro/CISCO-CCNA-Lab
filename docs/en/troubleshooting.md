@@ -3,7 +3,7 @@
 
 This document describes the issues encountered during the development of the lab and the solutions applied.
 
----
+
 
 ## ⚡ Common Issues and Solutions
 
@@ -23,7 +23,7 @@ router ospf 1
 ```
 Ensure the `tunnel destination` is reachable and appears in the routing table.
 
----
+
 
 ### 2. ⚠️ DHCP not assigning IP addresses
 **Cause**:
@@ -33,7 +33,7 @@ Ensure the `tunnel destination` is reachable and appears in the routing table.
 **Solution**:
 Check the `ip dhcp excluded-address` and ensure the `default-router` belongs to the corresponding VLAN.
 
----
+
 
 ### 3. ⚠️ STP blocking traffic between switches
 **Cause**:
@@ -46,7 +46,7 @@ spanning-tree vlan X root primary
 ```
 Use EtherChannel properly and avoid loops.
 
----
+
 
 ### 4. ❌ BGP does not establish neighbor relationships
 **Cause**:
@@ -57,11 +57,11 @@ Use EtherChannel properly and avoid loops.
 Verify:
 ```bash
 ping 10.0.0.2
-router bgp 65001
- neighbor 10.0.0.2 remote-as 65002
+router bgp 65002
+ neighbor 10.0.0.2 remote-as 65001
 ```
 
----
+
 
 ### 5. ❌ SSH not working
 **Cause**: Missing commands under `line vty`
@@ -72,17 +72,17 @@ line vty 0 4
  transport input ssh
 ```
 
----
+
 
 ### 6. ⚡ NAT blocking GRE/BGP
 **Cause**: NAT applied to the tunnel interface
 **Solution**: Exclude GRE/BGP traffic from NAT (not required in Packet Tracer, but best practice in real environments)
 
----
+
 
 ## ✅ Final Recommendations
 - Always verify IP connectivity before configuring routing protocols.
 - Use `show ip route`, `show ip ospf neighbor`, `show ip bgp summary` for diagnostics.
 - Always document your changes and maintain per-device backups.
 
----
+

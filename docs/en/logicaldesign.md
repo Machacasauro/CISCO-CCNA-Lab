@@ -1,9 +1,8 @@
-
 # 🧭 Network Logical Design
 
 This document describes the logical architecture of both project sites: Office 1 (Barcelona) and Office 2 (Madrid).
 
----
+
 
 ## 🏢 Office 1
 ## Barcelona
@@ -14,14 +13,14 @@ The network is designed with high availability, logical segmentation through VLA
 
 #### 1. **Access Switches (ASW-A1, ASW-A2, ASW-A3)**
 - Connect end-user devices to the network.
-- Functional VLANs: 10 (Network), 20 (Servers), 30 (Guests), 99 (Management).
+- Functional VLANs: 10 (Network), 20 (Servers), 30 (Guests), 40 (Voice) and 99 (Management).
 - Redundant trunk connections to distribution switches via Layer 2 EtherChannel.
 
 #### 2. **Distribution Switches (DSW-A1, DSW-A2)**
 - Perform Inter-VLAN routing via SVIs.
 - Configured with HSRP for virtual gateway addresses.
+- Participates in OSPF (area 0) and BGP (AS 65002).
 - Layer 3 communication between them via EtherChannel.
-- Participate in OSPF (area 0) along with router R1.
 
 #### 3. **Router R1**
 - Connected to both DSWs via point-to-point Layer 3 links.
@@ -40,17 +39,17 @@ The network is designed with high availability, logical segmentation through VLA
 ### 🕸️ Logical Diagram
 
 ```
-[PCs]--ASW(1/2/3)---------
+[PCs]--ASW(1/2/3)
             |           |
         [DSW-A1]====[DSW-A2]
             |           |
          [Gi0/0]     Gi0/1
             \\       //
-               [R1] --- NAT ----> [ISP] --- [R2]
-                    --- GRE ---
+               [R1]  NAT -> [ISP]  [R2]
+                     GRE 
 ```
 
----
+
 
 ## 🏢 Office 2
 ## Madrid
@@ -73,9 +72,10 @@ The network uses a Router-on-a-Stick architecture with subinterfaces on R2 for I
 #### 3. **Router R2**
 - Router-on-a-Stick with subinterfaces `Gi0/0.X` for each VLAN.
 - DHCP server for VLANs 11, 21, 31, 99, and 100.
-- Participates in OSPF (area 0) and BGP (AS 65002).
+- Participates in OSPF (area 0) and BGP (AS 65001).
 - GRE tunnel to R1 (Office 1) via ISP-B.
 - Default route pointing to ISP-B.
+- It does not perform NAT between VLANs, only for traffic destined to the Internet (WAN)
 
 ### 🔁 Security and Control
 
@@ -87,10 +87,10 @@ The network uses a Router-on-a-Stick architecture with subinterfaces on R2 for I
 ### 🕸️ Logical Diagram
 
 ```
-[PCs]--ASW(1/2/3)--+-------------
+[PCs]--ASW(1/2/3)--+-
             |           |
         [DSW-B1]====[DSW-B2]
              |
-            [R2]--- NAT ----> [ISP] --- [R1]
-                --- GRE ----
+            [R2] NAT -> [ISP]  [R1]
+                 GRE -
 ```

@@ -13,14 +13,15 @@ La red está diseñada con alta disponibilidad, segmentación lógica mediante V
 
 #### 1. **Switches de Acceso (ASW-A1, ASW-A2, ASW-A3)**
 - Conectan dispositivos finales a la red.
-- VLANs funcionales: 10 (Red), 20 (Servidores), 30 (Invitados), 99 (Administración).
+- VLANs funcionales: 10 (Red), 20 (Servidores), 30 (Invitados), 40 (Voz) y 99 (Administración).
 - Conexiones trunk redundantes a los switches de distribución mediante EtherChannel L2.
 
 #### 2. **Switches de Distribución (DSW-A1, DSW-A2)**
 - Ejecutan enrutamiento Inter-VLAN mediante SVIs.
 - Configurados con HSRP para puertas de enlace virtuales.
+- Participa en OSPF (área 0).
 - Comunicación L3 entre ellos mediante EtherChannel.
-- Participan en OSPF (área 0) junto al router R1.
+
 
 #### 3. **Router R1**
 - Conectado a ambos DSW mediante enlaces punto a punto L3.
@@ -59,7 +60,7 @@ La red utiliza una arquitectura Router-on-a-Stick con subinterfaces en R2 para e
 ### 📐 Componentes Lógicos
 
 #### 1. **Switches de Acceso (ASW-B1, ASW-B2, ASW-B3)**
-- Conectan dispositivos a las VLANs 11 (Red), 21 (Servidores), 31 (Invitados), 99 (Administración).
+- Conectan dispositivos a las VLANs 10 (Red), 20 (Servidores), 30 (Invitados), 40 (voz) y 99 (Administración).
 - Trunk hacia el switch de distribución (DSW-B1).
 - Participan en EtherChannel L2 hacia DSW-B1/B2.
 
@@ -71,10 +72,11 @@ La red utiliza una arquitectura Router-on-a-Stick con subinterfaces en R2 para e
 
 #### 3. **Router R2**
 - Router-on-a-Stick con subinterfaces `Gi0/0.X` para cada VLAN.
-- Servidor DHCP para VLANs 11, 21, 31, 99 y 100.
-- Participa en OSPF (área 0) y BGP (AS 65002).
+- Servidor DHCP para VLANs 10, 20, 30, 40 y 99.
+- Participa en OSPF (área 0) y BGP (AS 65001).
 - Túnel GRE hacia R1 (Oficina 1) por medio de ISP-B.
 - Default route hacia ISP-B.
+- No hace NAT entre las VLANs solo al tráfico a Internet (WAN)
 
 ### 🔁 Seguridad y Control
 

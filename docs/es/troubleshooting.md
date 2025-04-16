@@ -2,7 +2,7 @@
 
 Este documento describe los problemas encontrados durante el desarrollo del laboratorio y las soluciones aplicadas.
 
----
+
 
 ## ⚡ Problemas Comunes y Soluciones
 
@@ -22,7 +22,7 @@ router ospf 1
 ```
 Asegurarse también de que el `tunnel destination` sea enrutable y esté en la tabla de rutas.
 
----
+
 
 ### 2. ⚠️ DHCP no asigna IPs
 **Causa**:
@@ -32,7 +32,7 @@ Asegurarse también de que el `tunnel destination` sea enrutable y esté en la t
 **Solución**:
 Revisar `ip dhcp excluded-address` y que el `default-router` pertenezca a la VLAN correspondiente.
 
----
+
 
 ### 3. ⚠️ STP bloqueando tráfico entre switches
 **Causa**:
@@ -45,7 +45,7 @@ spanning-tree vlan X root primary
 ```
 Usar EtherChannel correctamente y evitar loops.
 
----
+
 
 ### 4. ❌ BGP no forma vecinos
 **Causa**:
@@ -60,7 +60,7 @@ router bgp 65001
  neighbor 10.0.0.2 remote-as 65002
 ```
 
----
+
 
 ### 5. ❌ SSH no funciona
 **Causa**: Faltaban comandos en `line vty`
@@ -71,17 +71,16 @@ line vty 0 4
  transport input ssh
 ```
 
----
+
 
 ### 6. ⚡ NAT bloqueando GRE/BGP
 **Causa**: NAT sobre interfaz del tunnel
 **Solución**: Excluir el tráfico GRE/BGP del NAT (no necesario en PT, pero buena práctica en entornos reales)
 
----
+
 
 ## ✅ Recomendaciones Finales
 - Verifica siempre conectividad IP antes de configurar protocolos de enrutamiento.
 - Usa `show ip route`, `show ip ospf neighbor`, `show ip bgp summary` para diagnóstico.
 - Documenta siempre tus cambios y respaldos por dispositivo.
 
----
